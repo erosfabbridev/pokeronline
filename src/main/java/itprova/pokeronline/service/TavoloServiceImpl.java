@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import itprova.pokeronline.model.Tavolo;
+import itprova.pokeronline.model.Utente;
 import itprova.pokeronline.repository.tavolo.TavoloRepository;
 
 @Service
@@ -50,6 +51,12 @@ public class TavoloServiceImpl implements TavoloService {
 	public List<Tavolo> listAllTavoli() {
 
 		return (List<Tavolo>) tavoloRepository.findAll();
+	}
+
+	@Override
+	public List<Tavolo> listaTavoliCreatiDa(Utente utente) {
+		
+		return (List<Tavolo>) tavoloRepository.findAllCreatedBy(utente);
 	}
 
 }

@@ -3,6 +3,7 @@ package itprova.pokeronline.service;
 import java.util.List;
 
 import itprova.pokeronline.model.Tavolo;
+import itprova.pokeronline.model.Utente;
 
 public interface TavoloService {
 	
@@ -17,5 +18,8 @@ public interface TavoloService {
 	Tavolo caricaSingoloTavoloEagerGiocatori(Long id);
 	
 	List<Tavolo> listAllTavoli();
+
+	List<Tavolo> listaTavoliCreatiDa(Utente utente);
 	
 }
+
