@@ -35,5 +35,6 @@ public class Ruolo {
 	private String descrizione;
 	@Column(name = "codice")
 	private String codice;
+	
 
 }
