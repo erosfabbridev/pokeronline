@@ -13,8 +13,8 @@ public interface TavoloRepository  extends CrudRepository<Tavolo, Long> {
 	@Query("from Tavolo t join fetch t.giocatori where t.id=t.id")
 	List<Tavolo> findAllEager();
 	
-	@Query("from Tavolo t join fetch t.giocatori where t.id=:id")
-	Tavolo findEager(Long id);
+	@Query("from Tavolo t left join fetch t.giocatori where t.id=?1")
+	Tavolo findByIdEager(Long idTavolo);
 	
 	@Query("from Tavolo t where t.utenteCreazione=:utente")
 	List<Tavolo> findAllCreatedBy(Utente utente);
@@ -26,9 +26,9 @@ public interface TavoloRepository  extends CrudRepository<Tavolo, Long> {
 	List<Tavolo> findAllWhereUtenteIsPresent(Utente utente);
 
 	@Query("from Tavolo t join fetch t.giocatori g where g=:utente and t.id=:id")
-	Tavolo findByIdWhereUtenteIsPresent(Utente giocatore, Long id);
+	Tavolo findByIdWhereUtenteIsPresent(Utente utente, Long id);
 
-	@Query("from Tavolo t where g=:utente t.esperienzaMin <= :esperienzaAccumulata")
+	@Query("from Tavolo t where g=:utente and t.esperienzaMin <= :esperienzaAccumulata")
 	List<Tavolo> findAllEsperienzaMinoreOUgualeA(Integer esperienzaAccumulata);
 	
 }

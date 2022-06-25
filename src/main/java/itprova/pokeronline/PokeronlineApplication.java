@@ -1,5 +1,7 @@
 package itprova.pokeronline;
 
+
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import itprova.pokeronline.model.Ruolo;
+import itprova.pokeronline.model.Tavolo;
 import itprova.pokeronline.model.Utente;
 import itprova.pokeronline.service.RuoloService;
 import itprova.pokeronline.service.TavoloService;
@@ -48,6 +51,7 @@ public class PokeronlineApplication implements CommandLineRunner {
 										   .cognome("rossi")
 										   .username("admin")
 										   .password("admin")
+										   .esperienzaAccumulata(100)
 										   .dateCreated(new Date()).build();
 			
 			admin.getRuoli().add(ruoloServiceInstance.cercaPerDescrizioneECodice("Administrator", Ruolo.ROLE_ADMIN));
@@ -77,7 +81,9 @@ public class PokeronlineApplication implements CommandLineRunner {
 			utenteServiceInstance.inserisciNuovo(specialPlayer);
 			utenteServiceInstance.changeUserAbilitation(specialPlayer.getId());
 		}
-		
+
+		Utente utenteCrezione = utenteServiceInstance.findByUsername("admin");
+		tavoloService.inserisciNuovo(Tavolo.builder().cifraMinima(100).esperienzaMin(0).dataCreazione(LocalDate.now()).denominazione("tavolino").utenteCreazione(utenteCrezione).build());
 		
 		
 	

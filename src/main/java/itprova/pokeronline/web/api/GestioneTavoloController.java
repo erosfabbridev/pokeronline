@@ -70,7 +70,7 @@ public class GestioneTavoloController {
 		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
 				.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
 			return TavoloDTO.createTavoloDTOfromModel(tavoloService.caricaSingoloTavolo(id));
-			
+
 		}
 
 		return TavoloDTO.createTavoloDTOfromModel(tavoloService.caricaSingoloTavoloConUtente(id,
@@ -107,15 +107,13 @@ public class GestioneTavoloController {
 
 	}
 
+	// endpoint non molto utile dato che l'utente può scegliere a piacimento il
+	// tavolo
 	@PostMapping("/aggiungiGiocatore")
 	public TavoloDTO aggiungiGiocatoreATavolo(@Valid @RequestBody AggiungiGiocatoreDTO aggiungiGiocatoreDTO) {
 
-		Tavolo tavolo = tavoloService.caricaSingoloTavoloEagerGiocatori(aggiungiGiocatoreDTO.getIdTavolo());
-
-		tavolo.getGiocatori().add(utenteService.caricaSingoloUtente(aggiungiGiocatoreDTO.getIdGiocatore()));
-		Tavolo tavoloConGiocatori = tavoloService.aggiorna(tavolo);
-
-		return TavoloDTO.createTavoloDTOfromModel(tavoloConGiocatori);
+		return TavoloDTO.createTavoloDTOfromModel(tavoloService
+				.aggiungiGiocatoreATavolo(aggiungiGiocatoreDTO.getIdTavolo(), aggiungiGiocatoreDTO.getIdGiocatore()));
 
 	}
 

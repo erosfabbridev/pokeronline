@@ -52,7 +52,7 @@ public class TavoloServiceImpl implements TavoloService {
 	@Transactional(readOnly = true)
 	public Tavolo caricaSingoloTavoloEagerGiocatori(Long id) {
 
-		return tavoloRepository.findEager(id);
+		return tavoloRepository.findByIdEager(id);
 	}
 
 	@Override
@@ -103,6 +103,19 @@ public class TavoloServiceImpl implements TavoloService {
 	public List<Tavolo> trovaTavoliPerGiocare(Utente utente) {
 		
 		return tavoloRepository.findAllEsperienzaMinoreOUgualeA(utente.getEsperienzaAccumulata());
+	}
+
+	@Override
+	@Transactional
+	public Tavolo aggiungiGiocatoreATavolo(Long idTavolo, Long idGiocatore) {
+		
+		Utente utente = utenteRepository.findById(idGiocatore).orElse(null);
+		Tavolo tavolo = tavoloRepository.findById(idTavolo).orElse(null);
+		
+		tavolo.getGiocatori().add(utente);
+		
+		return tavoloRepository.save(tavolo);
+		
 	}
 
 }

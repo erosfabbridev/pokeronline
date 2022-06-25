@@ -46,7 +46,8 @@ public class Utente {
 	@Column(name = "esperienzaaccumulata")
 	private Integer esperienzaAccumulata;
 	@Column(name = "creditoaccumulato")
-	private Integer creditoAccumulato;
+	@Builder.Default
+	private Integer creditoAccumulato = 0;
 	@Enumerated(EnumType.STRING)
 	private StatoUtente stato;
 
