@@ -22,6 +22,8 @@ public interface TavoloService {
 	List<Tavolo> listaTavoliCreatiDa(Utente utente);
 
 	Tavolo caricaSingoloTavoloConUtente( Long id, Utente utente);
+
+	List<Tavolo> caricaTavoliInCuiSonoPresente(Utente utente);
 	
 }
 

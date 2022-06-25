@@ -73,4 +73,10 @@ public class TavoloServiceImpl implements TavoloService {
 		return tavoloRepository.findEagerConUser(id, utente);
 	}
 
+	@Override
+	public List<Tavolo> caricaTavoliInCuiSonoPresente(Utente utente) {
+		
+		return tavoloRepository.findAllWhereUtenteIsPresent(utente);
+	}
+
 }

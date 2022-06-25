@@ -21,4 +21,7 @@ public interface TavoloRepository  extends CrudRepository<Tavolo, Long> {
 
 	@Query("from Tavolo t join fetch t.giocatori where t.id=:id and t.utenteCreazione=:utente")
 	Tavolo findEagerConUser(Long id, Utente utente);
+
+	@Query("from Tavolo t join fetch t.giocatori g where g=:utente")
+	List<Tavolo> findAllWhereUtenteIsPresent(Utente utente);
 }
