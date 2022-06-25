@@ -78,10 +78,10 @@ public class GestioneTavoloController {
 	public void delete(@PathVariable(required = true) Long id) {
 		Tavolo tavolo = tavoloService.caricaSingoloTavolo(id);
 
-		if (regista == null)
+		if (tavolo == null)
 			throw new TavoloNotFoundException("Regista not found con id: " + id);
 
-		registaService.rimuovi(regista);
+		tavoloService.rimuovi(tavolo);
 	}
 
 
