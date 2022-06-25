@@ -92,9 +92,17 @@ public class TavoloServiceImpl implements TavoloService {
 		tavolo.setGiocatori(tavolo.getGiocatori().stream()
 				.filter(giocatoreItem -> giocatoreItem.getUsername() != giocatore.getUsername())
 				.collect(Collectors.toSet()));
-
+		giocatore.setEsperienzaAccumulata(giocatore.getEsperienzaAccumulata()+1);
+		
 		tavoloRepository.save(tavolo);
+		
 
+	}
+
+	@Override
+	public List<Tavolo> trovaTavoliPerGiocare(Utente utente) {
+		
+		return tavoloRepository.findAllEsperienzaMinoreOUgualeA(utente.getEsperienzaAccumulata());
 	}
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -92,7 +93,7 @@ public class GestioneTavoloController {
 		tavoloService.rimuovi(tavolo);
 	}
 
-	@PostMapping("/update")
+	@PutMapping("/update")
 	public TavoloDTO updateTavolo(@Valid @RequestBody TavoloDTO tavoloInput) {
 
 		if (tavoloInput.getId() == null)

@@ -26,6 +26,9 @@ public interface TavoloService {
 	List<Tavolo> caricaTavoliInCuiSonoPresente(Utente utente);
 
 	void abbandonaPartita(Long idTavolo, Utente giocatore);
+
+	List<Tavolo> trovaTavoliPerGiocare(Utente findByUsername);
+	
 	
 	
 }

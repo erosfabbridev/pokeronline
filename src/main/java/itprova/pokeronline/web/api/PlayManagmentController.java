@@ -55,5 +55,11 @@ public class PlayManagmentController {
 		tavoloService.abbandonaPartita(idTavolo, giocatore);
 	}
 	
+	@GetMapping("/ricercaTavoliEsperienzaSufficiente")
+	public List<TavoloDTO> ricercaTavoliToJoin() {
+
+		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.trovaTavoliPerGiocare(
+				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
+	}
 		
 }
