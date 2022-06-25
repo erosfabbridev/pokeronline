@@ -21,6 +21,7 @@ import itprova.pokeronline.model.Tavolo;
 import itprova.pokeronline.service.TavoloService;
 import itprova.pokeronline.service.UtenteService;
 import itprova.pokeronline.web.api.exception.IdNotNullForInsertException;
+import itprova.pokeronline.web.api.exception.TavoloHasGiocatoriException;
 import itprova.pokeronline.web.api.exception.TavoloNotFoundException;
 
 @RestController
@@ -73,13 +74,18 @@ public class GestioneTavoloController {
 				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
 	}
 	
+	//un utente potrebbe eliminare un qualsiasi tavolo inserendo un id casuale 
+	@SuppressWarnings("unused")
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable(required = true) Long id) {
-		Tavolo tavolo = tavoloService.caricaSingoloTavolo(id);
+		Tavolo tavolo = tavoloService.caricaSingoloTavoloEagerGiocatori(id);
+		if (!tavolo.getGiocatori().isEmpty()) {
+			throw new TavoloHasGiocatoriException("Il tavolo ha dei giocatori collegati");
+		}
 
 		if (tavolo == null)
-			throw new TavoloNotFoundException("Regista not found con id: " + id);
+			throw new TavoloNotFoundException("Tavolo not found con id: " + id);
 
 		tavoloService.rimuovi(tavolo);
 	}
