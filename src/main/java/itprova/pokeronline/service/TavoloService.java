@@ -2,8 +2,6 @@ package itprova.pokeronline.service;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
 import itprova.pokeronline.model.Tavolo;
 import itprova.pokeronline.model.Utente;
 
@@ -32,6 +30,8 @@ public interface TavoloService {
 	List<Tavolo> trovaTavoliPerGiocare(Utente findByUsername);
 
 	Tavolo aggiungiGiocatoreATavolo(Long idTavolo, Long idGiocatore);
+	
+	List<Tavolo> findByExample (Tavolo tavolo, Utente utente);
 	
 	
 

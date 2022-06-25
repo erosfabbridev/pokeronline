@@ -88,34 +88,39 @@ public class TavoloServiceImpl implements TavoloService {
 	@Transactional
 	public void abbandonaPartita(Long idTavolo, Utente giocatore) {
 		Tavolo tavolo = tavoloRepository.findByIdWhereUtenteIsPresent(giocatore, idTavolo);
-		
+
 		tavolo.setGiocatori(tavolo.getGiocatori().stream()
 				.filter(giocatoreItem -> giocatoreItem.getUsername() != giocatore.getUsername())
 				.collect(Collectors.toSet()));
-		giocatore.setEsperienzaAccumulata(giocatore.getEsperienzaAccumulata()+1);
-		
+		giocatore.setEsperienzaAccumulata(giocatore.getEsperienzaAccumulata() + 1);
+
 		tavoloRepository.save(tavolo);
-		
 
 	}
 
 	@Override
 	public List<Tavolo> trovaTavoliPerGiocare(Utente utente) {
-		
+
 		return tavoloRepository.findAllEsperienzaMinoreOUgualeA(utente.getEsperienzaAccumulata());
 	}
 
 	@Override
 	@Transactional
 	public Tavolo aggiungiGiocatoreATavolo(Long idTavolo, Long idGiocatore) {
-		
+
 		Utente utente = utenteRepository.findById(idGiocatore).orElse(null);
 		Tavolo tavolo = tavoloRepository.findById(idTavolo).orElse(null);
-		
+
 		tavolo.getGiocatori().add(utente);
-		
+
 		return tavoloRepository.save(tavolo);
-		
+
+	}
+
+	@Override
+	public List<Tavolo> findByExample(Tavolo tavolo, Utente utente) {
+
+		return tavoloRepository.findByExample(tavolo, utente);
 	}
 
 }

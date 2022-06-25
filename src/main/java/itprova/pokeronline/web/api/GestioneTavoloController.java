@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import itprova.pokeronline.dto.AggiungiGiocatoreDTO;
 import itprova.pokeronline.dto.TavoloDTO;
+import itprova.pokeronline.dto.TavoloExampleDTO;
 import itprova.pokeronline.model.Tavolo;
 import itprova.pokeronline.service.TavoloService;
 import itprova.pokeronline.service.UtenteService;
@@ -56,7 +57,7 @@ public class GestioneTavoloController {
 		if (tavoloInput.getId() != null)
 			throw new IdNotNullForInsertException("Non è ammesso fornire un id per la creazione");
 
-		Tavolo tavoloDaInserire = tavoloInput.buildFilmModel();
+		Tavolo tavoloDaInserire = tavoloInput.buildTavoloModel();
 		tavoloDaInserire.setUtenteCreazione(
 				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
 		Tavolo tavoloInsert = tavoloService.inserisciNuovo(tavoloDaInserire);
@@ -99,7 +100,7 @@ public class GestioneTavoloController {
 		if (tavoloInput.getId() == null)
 			throw new IdNullForUpdateException("E' necessario un id per l'update del tavolo");
 
-		Tavolo tavoloDaModificare = tavoloInput.buildFilmModel();
+		Tavolo tavoloDaModificare = tavoloInput.buildTavoloModel();
 		tavoloDaModificare.setUtenteCreazione(
 				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
 		Tavolo tavoloModificato = tavoloService.aggiorna(tavoloDaModificare);
@@ -114,6 +115,21 @@ public class GestioneTavoloController {
 
 		return TavoloDTO.createTavoloDTOfromModel(tavoloService
 				.aggiungiGiocatoreATavolo(aggiungiGiocatoreDTO.getIdTavolo(), aggiungiGiocatoreDTO.getIdGiocatore()));
+
+	}
+
+	@PostMapping("/search")
+	public List<TavoloDTO> findByExample(@RequestBody TavoloExampleDTO exampleDTO) {
+
+		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+				.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
+
+			return TavoloDTO
+					.createTavoloDTOListFromModelList(tavoloService.findByExample(exampleDTO.buildTavoloModel(), null));
+
+		}
+		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.findByExample(exampleDTO.buildTavoloModel(),
+				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
 
 	}
 
