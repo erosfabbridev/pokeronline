@@ -3,6 +3,8 @@ package itprova.pokeronline.web.api;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +15,7 @@ import itprova.pokeronline.model.Ruolo;
 import itprova.pokeronline.model.Utente;
 import itprova.pokeronline.service.RuoloService;
 import itprova.pokeronline.service.UtenteService;
-import itprova.pokeronline.web.api.exception.CreditoMinimoException;
 import itprova.pokeronline.web.api.exception.IdNotNullForInsertException;
-import itprova.pokeronline.web.api.exception.WebException;
 
 @RestController
 @RequestMapping("api/gestioneAmministrazione")
@@ -54,8 +54,7 @@ public class GestioneAmministrazioneController {
 	public UtenteDTO createNewAdmin(@Valid @RequestBody UtenteDTO utenteInput) {
 
 		if (utenteInput.getId() != null) {
-//			  WebException ex = new CreditoMinimoException("Non è ammesso fornire un id per la creazione");
-//			  throw ex;
+			  throw new IdNotNullForInsertException("Non è ammesso fornire un id per la creazione");
 		}
 			
 		Utente utente = utenteInput.buildUtenteModel(false);
@@ -64,9 +63,12 @@ public class GestioneAmministrazioneController {
 		
 		return UtenteDTO.buildUtenteDTOFromModel(utente);
 	}
-//	@GetMapping
-//	public UtenteDTO findById() {
-//		
-//	}
-//	
+	
+	@GetMapping("/utente/{idUtente}")
+	public UtenteDTO findById(@PathVariable(value = "idUtente", required = true) Long idUtente) {
+		
+		return UtenteDTO.buildUtenteDTOFromModel(utenteService.caricaSingoloUtente(idUtente));
+		
+	}
+	
 }

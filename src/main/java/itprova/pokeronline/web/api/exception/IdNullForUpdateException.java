@@ -1,9 +1,18 @@
 package itprova.pokeronline.web.api.exception;
 
-public class IdNullForUpdateException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class IdNullForUpdateException extends  WebException {
+
 	private static final long serialVersionUID = 1L;
 
-	public IdNullForUpdateException(String message) {
-		super(message);
+	public IdNullForUpdateException(String string) {
+		super(string);
+		
+		
+	}
+	public HttpStatus getRisposta() {
+		
+		return HttpStatus.BAD_REQUEST;
 	}
 }

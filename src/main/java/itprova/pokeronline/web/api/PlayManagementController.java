@@ -16,9 +16,7 @@ import itprova.pokeronline.model.Utente;
 import itprova.pokeronline.service.TavoloService;
 import itprova.pokeronline.service.UtenteService;
 import itprova.pokeronline.web.api.exception.CreditoMinimoException;
-import itprova.pokeronline.web.api.exception.NotEnoughCreditsException;
 import itprova.pokeronline.web.api.exception.NotEnoughExpException;
-import itprova.pokeronline.web.api.exception.WebException;
 
 @RestController
 @RequestMapping("api/playManagement")
@@ -81,9 +79,7 @@ public class PlayManagementController {
 		}
 
 		if (giocatore.getCreditoAccumulato() < tavolo.getCifraMinima()) {
-			 
 			throw new CreditoMinimoException("non hai abbastanza soldi per questo tavolo");
-
 		}
 		if (!tavolo.getGiocatori().contains(giocatore))
 			tavoloService.aggiungiGiocatoreATavolo(idTavolo, idTavolo);
