@@ -24,6 +24,9 @@ public interface TavoloService {
 	Tavolo caricaSingoloTavoloConUtente( Long id, Utente utente);
 
 	List<Tavolo> caricaTavoliInCuiSonoPresente(Utente utente);
+
+	void abbandonaPartita(Long idTavolo, Utente giocatore);
+	
 	
 }
 

@@ -68,8 +68,8 @@ public class GestioneTavoloController {
 
 		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
 				.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
-			TavoloDTO tavolo = TavoloDTO.createTavoloDTOfromModel(tavoloService.caricaSingoloTavolo(id));
-			return tavolo;
+			return TavoloDTO.createTavoloDTOfromModel(tavoloService.caricaSingoloTavolo(id));
+			
 		}
 
 		return TavoloDTO.createTavoloDTOfromModel(tavoloService.caricaSingoloTavoloConUtente(id,

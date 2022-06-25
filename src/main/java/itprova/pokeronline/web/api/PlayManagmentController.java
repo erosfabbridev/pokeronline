@@ -41,10 +41,19 @@ public class PlayManagmentController {
 	}
 
 	@GetMapping("/lastGame")
-	public List<TavoloDTO> getById() {
+	public List<TavoloDTO> lastGame() {
 
 		return TavoloDTO.createTavoloDTOListFromModelList(tavoloService.caricaTavoliInCuiSonoPresente(
 				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
 	}
+	
+	@GetMapping("/abbandonaPartita/{idTavolo}")
+	public void abbandona(@PathVariable(value="idTavolo", required = true)Long idTavolo) {
 
+		Utente giocatore = utenteService
+				.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		tavoloService.abbandonaPartita(idTavolo, giocatore);
+	}
+	
+		
 }

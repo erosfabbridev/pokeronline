@@ -1,6 +1,7 @@
 package itprova.pokeronline.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,12 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 import itprova.pokeronline.model.Tavolo;
 import itprova.pokeronline.model.Utente;
 import itprova.pokeronline.repository.tavolo.TavoloRepository;
+import itprova.pokeronline.repository.utente.UtenteRepository;
 
 @Service
 public class TavoloServiceImpl implements TavoloService {
 
 	@Autowired
 	TavoloRepository tavoloRepository;
+	@Autowired
+	UtenteRepository utenteRepository;
 
 	@Override
 	@Transactional
@@ -26,14 +30,14 @@ public class TavoloServiceImpl implements TavoloService {
 	@Override
 	@Transactional
 	public Tavolo aggiorna(Tavolo tavolo) {
-		
+
 		return tavoloRepository.save(tavolo);
 	}
 
 	@Override
 	@Transactional
 	public void rimuovi(Tavolo tavolo) {
-	
+
 		tavoloRepository.delete(tavolo);
 	}
 
@@ -47,7 +51,7 @@ public class TavoloServiceImpl implements TavoloService {
 	@Override
 	@Transactional(readOnly = true)
 	public Tavolo caricaSingoloTavoloEagerGiocatori(Long id) {
-		
+
 		return tavoloRepository.findEager(id);
 	}
 
@@ -62,21 +66,35 @@ public class TavoloServiceImpl implements TavoloService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Tavolo> listaTavoliCreatiDa(Utente utente) {
-		
+
 		return (List<Tavolo>) tavoloRepository.findAllCreatedBy(utente);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Tavolo caricaSingoloTavoloConUtente(Long id, Utente utente ) {
-		
+	public Tavolo caricaSingoloTavoloConUtente(Long id, Utente utente) {
+
 		return tavoloRepository.findEagerConUser(id, utente);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Tavolo> caricaTavoliInCuiSonoPresente(Utente utente) {
-		
+
 		return tavoloRepository.findAllWhereUtenteIsPresent(utente);
+	}
+
+	@Override
+	@Transactional
+	public void abbandonaPartita(Long idTavolo, Utente giocatore) {
+		Tavolo tavolo = tavoloRepository.findByIdWhereUtenteIsPresent(giocatore, idTavolo);
+		
+		tavolo.setGiocatori(tavolo.getGiocatori().stream()
+				.filter(giocatoreItem -> giocatoreItem.getUsername() != giocatore.getUsername())
+				.collect(Collectors.toSet()));
+
+		tavoloRepository.save(tavolo);
+
 	}
 
 }
