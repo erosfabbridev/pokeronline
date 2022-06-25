@@ -33,7 +33,7 @@ public class TavoloDTO {
 	private LocalDate dataCreazione;
 	@Builder.Default
 	@JsonIgnoreProperties(value = "tavolo")
-	private List<GiocatoreDTO> giocatori = new ArrayList<>(0);
+	private List<UtenteDTO> giocatori = new ArrayList<>(0);
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Utente utenteCreazione;
 

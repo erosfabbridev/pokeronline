@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import itprova.pokeronline.dto.AggiungiGiocatoreDTO;
 import itprova.pokeronline.dto.TavoloDTO;
 import itprova.pokeronline.model.Tavolo;
 import itprova.pokeronline.service.TavoloService;
@@ -74,8 +75,8 @@ public class GestioneTavoloController {
 		return TavoloDTO.createTavoloDTOfromModel(tavoloService.caricaSingoloTavoloConUtente(id,
 				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
 	}
-	
-	//un utente potrebbe eliminare un qualsiasi tavolo inserendo un id casuale 
+
+	// un utente potrebbe eliminare un qualsiasi tavolo inserendo un id casuale
 	@SuppressWarnings("unused")
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
@@ -90,7 +91,7 @@ public class GestioneTavoloController {
 
 		tavoloService.rimuovi(tavolo);
 	}
-	
+
 	@PostMapping("/update")
 	public TavoloDTO updateTavolo(@Valid @RequestBody TavoloDTO tavoloInput) {
 
@@ -105,6 +106,16 @@ public class GestioneTavoloController {
 
 	}
 
+	@PostMapping("/aggiungiGiocatore")
+	public TavoloDTO aggiungiGiocatoreATavolo(@Valid @RequestBody AggiungiGiocatoreDTO aggiungiGiocatoreDTO) {
 
+		Tavolo tavolo = tavoloService.caricaSingoloTavoloEagerGiocatori(aggiungiGiocatoreDTO.getIdTavolo());
+
+		tavolo.getGiocatori().add(utenteService.caricaSingoloUtente(aggiungiGiocatoreDTO.getIdGiocatore()));
+		Tavolo tavoloConGiocatori = tavoloService.aggiorna(tavolo);
+
+		return TavoloDTO.createTavoloDTOfromModel(tavoloConGiocatori);
+
+	}
 
 }
