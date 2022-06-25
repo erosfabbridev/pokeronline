@@ -74,6 +74,7 @@ public class UtenteServiceImpl implements UtenteService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Utente findByUsernameAndPassword(String username, String password) {
 		return repository.findByUsernameAndPassword(username, password);
 	}

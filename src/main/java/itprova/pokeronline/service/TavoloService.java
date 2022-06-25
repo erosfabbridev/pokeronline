@@ -11,7 +11,7 @@ public interface TavoloService {
 	
 	Tavolo aggiorna(Tavolo tavolo);
 	
-	void cancella(Tavolo tavolo);
+	void rimuovi(Tavolo tavolo);
 	
 	Tavolo caricaSingoloTavolo(Long id);
 	
@@ -20,6 +20,8 @@ public interface TavoloService {
 	List<Tavolo> listAllTavoli();
 
 	List<Tavolo> listaTavoliCreatiDa(Utente utente);
+
+	Tavolo caricaSingoloTavoloConUtente( Long id, Utente utente);
 	
 }
 

@@ -24,39 +24,53 @@ public class TavoloServiceImpl implements TavoloService {
 	}
 
 	@Override
+	@Transactional
 	public Tavolo aggiorna(Tavolo tavolo) {
 		
 		return tavoloRepository.save(tavolo);
 	}
 
 	@Override
-	public void cancella(Tavolo tavolo) {
+	@Transactional
+	public void rimuovi(Tavolo tavolo) {
 
 		tavoloRepository.delete(tavolo);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Tavolo caricaSingoloTavolo(Long id) {
 
 		return tavoloRepository.findById(id).orElse(null);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Tavolo caricaSingoloTavoloEagerGiocatori(Long id) {
 		
 		return tavoloRepository.findEager(id);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
+
 	public List<Tavolo> listAllTavoli() {
 
 		return (List<Tavolo>) tavoloRepository.findAll();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Tavolo> listaTavoliCreatiDa(Utente utente) {
 		
 		return (List<Tavolo>) tavoloRepository.findAllCreatedBy(utente);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Tavolo caricaSingoloTavoloConUtente(Long id, Utente utente ) {
+		
+		return tavoloRepository.findEagerConUser(id, utente);
 	}
 
 }
