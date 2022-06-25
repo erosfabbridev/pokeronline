@@ -35,27 +35,16 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(body, headers, status);
 	}
 
-	@ExceptionHandler(TavoloNotFoundException.class)
-	public ResponseEntity<Object> handleTavoloNotFoundException(TavoloNotFoundException ex, WebRequest request) {
+	@ExceptionHandler(WebException.class)
+	public ResponseEntity<Object> handleTavoloNotFoundException(WebException ex, WebRequest request) {
 
 		Map<String, Object> body = new LinkedHashMap<>();
 		body.put("timestamp", LocalDateTime.now());
 		body.put("message", ex.getMessage());
-		body.put("status", HttpStatus.NOT_FOUND);
+		body.put("status", ex.getRisposta());
 
-		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(body, ex.getRisposta());
 	}
 	
-	@ExceptionHandler(TavoloHasGiocatoriException.class)
-	public ResponseEntity<Object> handleTavoloHasGiocatoriException(TavoloHasGiocatoriException ex, WebRequest request) {
-
-		Map<String, Object> body = new LinkedHashMap<>();
-		body.put("timestamp", LocalDateTime.now());
-		body.put("message", ex.getMessage());
-		body.put("status", HttpStatus.BAD_REQUEST);
-
-		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-	}
-
 
 }
