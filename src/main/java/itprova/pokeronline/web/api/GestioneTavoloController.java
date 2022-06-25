@@ -21,6 +21,7 @@ import itprova.pokeronline.model.Tavolo;
 import itprova.pokeronline.service.TavoloService;
 import itprova.pokeronline.service.UtenteService;
 import itprova.pokeronline.web.api.exception.IdNotNullForInsertException;
+import itprova.pokeronline.web.api.exception.IdNullForUpdateException;
 import itprova.pokeronline.web.api.exception.TavoloHasGiocatoriException;
 import itprova.pokeronline.web.api.exception.TavoloNotFoundException;
 
@@ -62,7 +63,7 @@ public class GestioneTavoloController {
 	}
 
 	@GetMapping("/{id}")
-	public TavoloDTO getById(@PathVariable(value = "id", required = true) long id) {
+	public TavoloDTO getById(@PathVariable(value = "id", required = true) Long id) {
 
 		if (SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
 				.anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
@@ -89,6 +90,21 @@ public class GestioneTavoloController {
 
 		tavoloService.rimuovi(tavolo);
 	}
+	
+	@PostMapping("/update")
+	public TavoloDTO updateTavolo(@Valid @RequestBody TavoloDTO tavoloInput) {
+
+		if (tavoloInput.getId() == null)
+			throw new IdNullForUpdateException("E' necessario un id per l'update del tavolo");
+
+		Tavolo tavoloDaModificare = tavoloInput.buildFilmModel();
+		tavoloDaModificare.setUtenteCreazione(
+				utenteService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+		Tavolo tavoloModificato = tavoloService.aggiorna(tavoloDaModificare);
+		return TavoloDTO.createTavoloDTOfromModel(tavoloModificato);
+
+	}
+
 
 
 }

@@ -72,6 +72,7 @@ public class PokeronlineApplication implements CommandLineRunner {
 			
 			specialPlayer.getRuoli().add(ruoloServiceInstance.cercaPerDescrizioneECodice("Special Player", Ruolo.ROLE_PLAYER));
 			utenteServiceInstance.inserisciNuovo(specialPlayer);
+			utenteServiceInstance.changeUserAbilitation(specialPlayer.getId());
 		}
 		
 		
